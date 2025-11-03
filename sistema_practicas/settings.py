@@ -29,6 +29,12 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 # Allowed hosts - acepta Vercel, Render.com, localhost y 127.0.0.1
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,.onrender.com,.vercel.app').split(',')
 
+# CSRF y seguridad para Vercel
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.vercel.app',
+    'https://*.onrender.com',
+]
+
 
 # Application definition
 
