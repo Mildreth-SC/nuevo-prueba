@@ -77,6 +77,18 @@ WSGI_APPLICATION = 'sistema_practicas.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# Fix para PythonAnywhere: Forzar IPv4 en conexiones a Supabase
+import socket
+_original_getaddrinfo = socket.getaddrinfo
+
+def ipv4_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
+    """Fuerza IPv4 para conexiones a Supabase en PythonAnywhere"""
+    if 'supabase' in host:
+        return _original_getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
+    return _original_getaddrinfo(host, port, family, type, proto, flags)
+
+socket.getaddrinfo = ipv4_getaddrinfo
+
 # Configuración para Supabase (PostgreSQL)
 DATABASES = {
     'default': {
@@ -87,8 +99,10 @@ DATABASES = {
         'HOST': config('DB_HOST', default='localhost'),
         'PORT': config('DB_PORT', default='5432'),
         'OPTIONS': {
-            'sslmode': 'require',  # Supabase requiere SSL
-        }
+            'sslmode': 'require',
+            'options': '-c search_path=public'
+        },
+        'CONN_MAX_AGE': 600,
     }
 }
 
