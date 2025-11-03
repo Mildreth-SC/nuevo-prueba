@@ -94,117 +94,78 @@
                         <i class="bi bi-pencil"></i> Editar Perfil
                     </h4>
                 </div>
-<<<<<<< HEAD
-<div class="card-body">
-    {% if has_profile %}
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <h5 class="mb-3">Información Personal</h5>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    {{ user_form.first_name|as_crispy_field }}
-                </div>
-                <div class="col-md-6 mb-3">
-                    {{ user_form.last_name|as_crispy_field }}
-                </div>
-            </div>
-            <div class="mb-3">
-                {{ user_form.email|as_crispy_field }}
-            </div>
-            
-            <hr>
-            
-            <h5 class="mb-3">Información del Estudiante</h5>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    {{ estudiante_form.codigo_estudiante|as_crispy_field }}
-                </div>
-                <div class="col-md-6 mb-3">
-                    {{ estudiante_form.carrera|as_crispy_field }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    {{ estudiante_form.ciclo_actual|as_crispy_field }}
-                </div>
-                <div class="col-md-6 mb-3">
-                    {{ estudiante_form.telefono|as_crispy_field }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    {{ estudiante_form.fecha_nacimiento|as_crispy_field }}
-                </div>
-                <div class="col-md-6 mb-3">
-                    {{ estudiante_form.foto|as_crispy_field }}
-                </div>
-            </div>
-            <div class="mb-3">
-                {{ estudiante_form.direccion|as_crispy_field }}
-            </div>
-            
-            <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-check"></i> Guardar Cambios
-                </button>
-                <a href="{% url 'home' %}" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-left"></i> Volver
-                </a>
-            </div>
-        </form>
-    {% else %}
-        <div class="alert alert-warning">
-            <i class="bi bi-exclamation-triangle"></i>
-            <strong>Perfil Incompleto</strong>
-            <p class="mb-0">Por favor, completa tu perfil de estudiante para continuar.</p>
-        </div>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <button type="submit" class="btn btn-primary mt-3">
-                <i class="bi bi-check"></i> Guardar Perfil
-            </button>
-        </form>
-    {% endif %}
-</div>
-=======
                 <div class="card-body">
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                {{ form.ciclo_actual|as_crispy_field }}
+                    {% if has_profile %}
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <h5 class="mb-3">Información Personal</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ user_form.first_name|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ user_form.last_name|as_crispy_field }}
+                                </div>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                {{ form.telefono|as_crispy_field }}
+                            <div class="mb-3">
+                                {{ user_form.email|as_crispy_field }}
                             </div>
+                            
+                            <hr>
+                            
+                            <h5 class="mb-3">Información del Estudiante</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ estudiante_form.codigo_estudiante|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ estudiante_form.carrera|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ estudiante_form.ciclo_actual|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ estudiante_form.telefono|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ estudiante_form.fecha_nacimiento|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ estudiante_form.foto|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                {{ estudiante_form.direccion|as_crispy_field }}
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check"></i> Guardar Cambios
+                                </button>
+                                <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                                    <i class="bi bi-arrow-left"></i> Volver
+                                </a>
+                            </div>
+                        </form>
+                    {% else %}
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            <strong>Perfil Incompleto</strong>
+                            <p class="mb-0">Por favor, completa tu perfil de estudiante para continuar.</p>
                         </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                {{ form.fecha_nacimiento|as_crispy_field }}
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                {{ form.foto|as_crispy_field }}
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            {{ form.direccion|as_crispy_field }}
-                        </div>
-                        
-                        <div class="d-flex justify-content-between">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check"></i> Guardar Cambios
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <button type="submit" class="btn btn-primary mt-3">
+                                <i class="bi bi-check"></i> Guardar Perfil
                             </button>
-                            <a href="{% url 'home' %}" class="btn btn-outline-secondary">
-                                <i class="bi bi-arrow-left"></i> Volver
-                            </a>
-                        </div>
-                    </form>
+                        </form>
+                    {% endif %}
                 </div>
->>>>>>> c043480196bfe36d6e87761ffd24b377fcac17e2
             </div>
             
             <!-- Mis Inscripciones Recientes -->

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Estudiante, Empresa, Practica, Inscripcion, DocumentoInscripcion, Carrera, Facultad, PracticaInterna, InscripcionInterna
+from .models import Estudiante, Empresa, Practica, Inscripcion, DocumentoInscripcion, Carrera, Facultad, PracticaInterna, InscripcionInterna, Calificacion
 
 
 class EmpresaRegistrationForm(UserCreationForm):
@@ -52,6 +52,7 @@ class EmpresaRegistrationForm(UserCreationForm):
         if commit:
             user.save()
             Empresa.objects.create(
+                user=user,
                 nombre=self.cleaned_data['nombre'],
                 ruc=self.cleaned_data['ruc'],
                 direccion=self.cleaned_data['direccion'],
@@ -113,6 +114,7 @@ class FacultadRegistrationForm(UserCreationForm):
         if commit:
             user.save()
             Facultad.objects.create(
+                user=user,
                 nombre=self.cleaned_data['nombre'],
                 codigo=self.cleaned_data['codigo'],
                 decano=self.cleaned_data['decano'],
@@ -211,7 +213,7 @@ class EmpresaForm(forms.ModelForm):
 class PracticaForm(forms.ModelForm):
     class Meta:
         model = Practica
-        fields = ['empresa', 'titulo', 'descripcion', 'requisitos', 'duracion_semanas', 'horas_semana', 
+        fields = ['titulo', 'descripcion', 'requisitos', 'duracion_semanas', 'horas_semana', 
                  'fecha_inicio', 'fecha_fin', 'cupos_totales', 'fecha_limite_inscripcion']
         widgets = {
             'fecha_inicio': forms.DateInput(attrs={'type': 'date'}),
@@ -220,10 +222,6 @@ class PracticaForm(forms.ModelForm):
             'descripcion': forms.Textarea(attrs={'rows': 4}),
             'requisitos': forms.Textarea(attrs={'rows': 4}),
         }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['empresa'].queryset = Empresa.objects.filter(activa=True)
 
 
 class InscripcionForm(forms.ModelForm):
@@ -236,6 +234,23 @@ class DocumentoInscripcionForm(forms.ModelForm):
     class Meta:
         model = DocumentoInscripcion
         fields = ['tipo', 'nombre', 'archivo']
+    
+    def clean_archivo(self):
+        archivo = self.cleaned_data.get('archivo')
+        if archivo:
+            # Validar extensión de archivo
+            extensiones_validas = ['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png']
+            nombre_archivo = archivo.name.lower()
+            if not any(nombre_archivo.endswith(ext) for ext in extensiones_validas):
+                raise forms.ValidationError(
+                    f'Tipo de archivo no permitido. Extensiones válidas: {", ".join(extensiones_validas)}'
+                )
+            
+            # Validar tamaño (máximo 5MB)
+            if archivo.size > 5 * 1024 * 1024:
+                raise forms.ValidationError('El archivo no puede superar los 5MB.')
+        
+        return archivo
 
 
 class BusquedaPracticasForm(forms.Form):
@@ -253,7 +268,7 @@ class BusquedaPracticasForm(forms.Form):
 class PracticaInternaForm(forms.ModelForm):
     class Meta:
         model = PracticaInterna
-        fields = ['facultad', 'titulo', 'descripcion', 'tipo_servicio', 'requisitos', 'duracion_semanas', 'horas_semana', 
+        fields = ['titulo', 'descripcion', 'tipo_servicio', 'requisitos', 'duracion_semanas', 'horas_semana', 
                  'fecha_inicio', 'fecha_fin', 'cupos_totales', 'fecha_limite_inscripcion', 'beneficios']
         widgets = {
             'fecha_inicio': forms.DateInput(attrs={'type': 'date'}),
@@ -263,10 +278,6 @@ class PracticaInternaForm(forms.ModelForm):
             'requisitos': forms.Textarea(attrs={'rows': 4}),
             'beneficios': forms.Textarea(attrs={'rows': 3}),
         }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['facultad'].queryset = Facultad.objects.filter(activa=True)
 
 
 class InscripcionInternaForm(forms.ModelForm):
@@ -285,3 +296,42 @@ class BusquedaPracticasInternasForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['facultad'].queryset = Facultad.objects.filter(activa=True)
+
+
+class CalificacionForm(forms.Form):
+    """Formulario para ingresar múltiples calificaciones por quimestre"""
+    
+    def __init__(self, *args, **kwargs):
+        quimestres = kwargs.pop('quimestres', ['Q1'])
+        periodos = kwargs.pop('periodos', ['P1', 'P2', 'P3'])
+        super().__init__(*args, **kwargs)
+        
+        # Crear campos dinámicamente para cada combinación
+        for quimestre in quimestres:
+            for periodo in periodos:
+                # Campo para Comportamiento
+                field_name_comp = f'comportamiento_{quimestre}_{periodo}'
+                self.fields[field_name_comp] = forms.ChoiceField(
+                    choices=[('', '---------')] + [
+                        ('A', 'A - Muy Satisfactorio (9-10)'),
+                        ('B', 'B - Satisfactorio (7-8)'),
+                        ('C', 'C - Poco Satisfactorio (4-6)'),
+                        ('D', 'D - Mejorable (1-3)'),
+                        ('E', 'E - Insatisfactorio (<1)'),
+                    ],
+                    required=False,
+                    label=f'Comportamiento {quimestre} {periodo}'
+                )
+                
+                # Campo para Proyecto
+                field_name_proy = f'proyecto_{quimestre}_{periodo}'
+                self.fields[field_name_proy] = forms.ChoiceField(
+                    choices=[('', '---------')] + [
+                        ('EX', 'EX - Excelente (10.00)'),
+                        ('MB', 'MB - Muy Bueno (9.00-9.99)'),
+                        ('B', 'B - Bueno (7.00-8.99)'),
+                        ('R', 'R - Regular (<7.00)'),
+                    ],
+                    required=False,
+                    label=f'Proyecto {quimestre} {periodo}'
+                )

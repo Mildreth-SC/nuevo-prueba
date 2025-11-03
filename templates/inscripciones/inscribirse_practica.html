@@ -82,20 +82,20 @@
         
         <!-- Formulario de Inscripción -->
         <div class="col-lg-8">
-            <div class="card shadow">
-                <div class="card-header bg-success text-white">
-                    <h4 class="mb-0">
+            <div class="form-container" style="margin: 0;">
+                <div class="form-header">
+                    <h2>
                         <i class="bi bi-person-plus"></i> Formulario de Inscripción
-                    </h4>
+                    </h2>
                 </div>
-                <div class="card-body">
-                    <div class="alert alert-warning">
-                        <i class="bi bi-exclamation-triangle"></i>
-                        <strong>Importante:</strong> Una vez enviada la inscripción, no podrás modificarla. 
-                        Asegúrate de revisar toda la información antes de continuar.
-                    </div>
-                    
-                    <form method="post">
+                
+                <div class="alert-uleam alert-warning">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <strong>Importante:</strong> Una vez enviada la inscripción, no podrás modificarla. 
+                    Asegúrate de revisar toda la información antes de continuar.
+                </div>
+                
+                <form method="post">
                         {% csrf_token %}
                         
                         <div class="mb-4">
@@ -130,32 +130,29 @@
                         </div>
                         
                         <!-- Confirmación -->
-                        <div class="mb-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="confirmacion" required>
-                                <label class="form-check-label" for="confirmacion">
-                                    <strong>Confirmo que:</strong>
-                                    <ul class="mb-0 mt-2">
-                                        <li>He leído y comprendo los requisitos de la práctica</li>
-                                        <li>Estoy disponible para la duración completa de la práctica</li>
-                                        <li>Toda la información proporcionada es veraz</li>
-                                        <li>Acepto los términos y condiciones del sistema</li>
-                                    </ul>
-                                </label>
-                            </div>
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="confirmacion" required>
+                            <label class="form-check-label" for="confirmacion">
+                                <strong style="color: var(--uleam-red);">Confirmo que:</strong>
+                                <ul class="mb-0 mt-2" style="list-style: none; padding-left: 0;">
+                                    <li>✓ He leído y comprendo los requisitos de la práctica</li>
+                                    <li>✓ Estoy disponible para la duración completa de la práctica</li>
+                                    <li>✓ Toda la información proporcionada es veraz</li>
+                                    <li>✓ Acepto los términos y condiciones del sistema</li>
+                                </ul>
+                            </label>
                         </div>
                         
                         <!-- Botones -->
-                        <div class="d-flex justify-content-between">
-                            <a href="{% url 'detalle_practica' practica.pk %}" class="btn btn-outline-secondary">
-                                <i class="bi bi-arrow-left"></i> Volver
-                            </a>
-                            <button type="submit" class="btn btn-success btn-lg">
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit">
                                 <i class="bi bi-check-circle"></i> Confirmar Inscripción
                             </button>
+                            <a href="{% url 'detalle_practica' practica.pk %}" class="btn-cancel">
+                                <i class="bi bi-arrow-left"></i> Volver
+                            </a>
                         </div>
                     </form>
-                </div>
             </div>
         </div>
     </div>

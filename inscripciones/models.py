@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 
@@ -43,6 +44,7 @@ class Estudiante(models.Model):
 
 
 class Empresa(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     nombre = models.CharField(max_length=200)
     ruc = models.CharField(max_length=11, unique=True)
     direccion = models.TextField()
@@ -115,6 +117,28 @@ class Practica(models.Model):
             self.cupos_disponibles > 0 and
             timezone.now() <= self.fecha_limite_inscripcion
         )
+    
+    def clean(self):
+        """Validar fechas y cupos lógicos"""
+        super().clean()
+        if self.fecha_fin and self.fecha_inicio and self.fecha_fin <= self.fecha_inicio:
+            raise ValidationError({
+                'fecha_fin': 'La fecha de fin debe ser posterior a la fecha de inicio.'
+            })
+        if self.fecha_limite_inscripcion and self.fecha_inicio:
+            if self.fecha_limite_inscripcion.date() > self.fecha_inicio:
+                raise ValidationError({
+                    'fecha_limite_inscripcion': 'La fecha límite de inscripción debe ser anterior o igual a la fecha de inicio.'
+                })
+        if self.cupos_disponibles is not None and self.cupos_totales is not None:
+            if self.cupos_disponibles > self.cupos_totales:
+                raise ValidationError({
+                    'cupos_disponibles': 'Los cupos disponibles no pueden ser mayores que los cupos totales.'
+                })
+    
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
 
 class Inscripcion(models.Model):
@@ -174,6 +198,7 @@ class DocumentoInscripcion(models.Model):
 
 
 class Facultad(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     nombre = models.CharField(max_length=200)
     codigo = models.CharField(max_length=10, unique=True)
     decano = models.CharField(max_length=100)
@@ -257,6 +282,28 @@ class PracticaInterna(models.Model):
             self.cupos_disponibles > 0 and
             timezone.now() <= self.fecha_limite_inscripcion
         )
+    
+    def clean(self):
+        """Validar fechas y cupos lógicos"""
+        super().clean()
+        if self.fecha_fin and self.fecha_inicio and self.fecha_fin <= self.fecha_inicio:
+            raise ValidationError({
+                'fecha_fin': 'La fecha de fin debe ser posterior a la fecha de inicio.'
+            })
+        if self.fecha_limite_inscripcion and self.fecha_inicio:
+            if self.fecha_limite_inscripcion.date() > self.fecha_inicio:
+                raise ValidationError({
+                    'fecha_limite_inscripcion': 'La fecha límite de inscripción debe ser anterior o igual a la fecha de inicio.'
+                })
+        if self.cupos_disponibles is not None and self.cupos_totales is not None:
+            if self.cupos_disponibles > self.cupos_totales:
+                raise ValidationError({
+                    'cupos_disponibles': 'Los cupos disponibles no pueden ser mayores que los cupos totales.'
+                })
+    
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
 
 class InscripcionInterna(models.Model):
@@ -289,3 +336,86 @@ class InscripcionInterna(models.Model):
     
     def __str__(self):
         return f"{self.estudiante} - {self.practica_interna.titulo}"
+
+
+class Calificacion(models.Model):
+    """Modelo para almacenar calificaciones por quimestre"""
+    TIPO_CALIFICACION_CHOICES = [
+        ('comportamiento', 'Comportamiento'),
+        ('proyecto', 'Proyecto'),
+    ]
+    
+    QUIMESTRE_CHOICES = [
+        ('Q1', 'Quimestre 1'),
+        ('Q2', 'Quimestre 2'),
+    ]
+    
+    PERIODO_CHOICES = [
+        ('P1', 'Período 1'),
+        ('P2', 'Período 2'),
+        ('P3', 'Período 3'),
+    ]
+    
+    # Valores de calificación según el sistema
+    VALOR_COMPORTAMIENTO_CHOICES = [
+        ('A', 'A - Muy Satisfactorio (9-10)'),
+        ('B', 'B - Satisfactorio (7-8)'),
+        ('C', 'C - Poco Satisfactorio (4-6)'),
+        ('D', 'D - Mejorable (1-3)'),
+        ('E', 'E - Insatisfactorio (<1)'),
+    ]
+    
+    VALOR_PROYECTO_CHOICES = [
+        ('EX', 'EX - Excelente (10.00)'),
+        ('MB', 'MB - Muy Bueno (9.00-9.99)'),
+        ('B', 'B - Bueno (7.00-8.99)'),
+        ('R', 'R - Regular (<7.00)'),
+    ]
+    
+    inscripcion = models.ForeignKey(
+        Inscripcion, 
+        on_delete=models.CASCADE, 
+        related_name='calificaciones',
+        null=True,
+        blank=True
+    )
+    inscripcion_interna = models.ForeignKey(
+        InscripcionInterna, 
+        on_delete=models.CASCADE, 
+        related_name='calificaciones',
+        null=True,
+        blank=True
+    )
+    tipo_calificacion = models.CharField(max_length=20, choices=TIPO_CALIFICACION_CHOICES)
+    quimestre = models.CharField(max_length=2, choices=QUIMESTRE_CHOICES)
+    periodo = models.CharField(max_length=2, choices=PERIODO_CHOICES)
+    valor = models.CharField(max_length=2)  # Almacena A, B, C, D, E, EX, MB, B, R
+    fecha_registro = models.DateTimeField(auto_now_add=True)
+    registrado_por = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+    
+    class Meta:
+        verbose_name = "Calificación"
+        verbose_name_plural = "Calificaciones"
+        unique_together = ['inscripcion', 'inscripcion_interna', 'tipo_calificacion', 'quimestre', 'periodo']
+        ordering = ['quimestre', 'periodo', 'tipo_calificacion']
+    
+    def __str__(self):
+        inscripcion_ref = self.inscripcion or self.inscripcion_interna
+        return f"{inscripcion_ref} - {self.get_tipo_calificacion_display()} {self.quimestre} {self.periodo}: {self.valor}"
+    
+    def get_descripcion_valor(self):
+        """Retorna la descripción completa del valor"""
+        if self.tipo_calificacion == 'comportamiento':
+            for valor, descripcion in self.VALOR_COMPORTAMIENTO_CHOICES:
+                if valor == self.valor:
+                    return descripcion
+        elif self.tipo_calificacion == 'proyecto':
+            for valor, descripcion in self.VALOR_PROYECTO_CHOICES:
+                if valor == self.valor:
+                    return descripcion
+        return self.valor

@@ -151,13 +151,21 @@
                     {% else %}
                         {% if practica.puede_inscribirse %}
                             {% if user.is_authenticated %}
-                                <a href="{% url 'inscribirse_practica' practica.pk %}" class="btn btn-primary btn-lg">
-                                    <i class="bi bi-person-plus"></i> Inscribirse
-                                </a>
+                                {% if user.estudiante %}
+                                    <a href="{% url 'inscribirse_practica' practica.pk %}" class="btn btn-primary btn-lg">
+                                        <i class="bi bi-person-plus"></i> Inscribirse
+                                    </a>
+                                {% else %}
+                                    <div class="alert alert-warning">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                        <strong>Solo estudiantes</strong>
+                                        <p class="mb-0">Solo los estudiantes pueden inscribirse en prácticas.</p>
+                                    </div>
+                                {% endif %}
                             {% else %}
                                 <div class="alert alert-info">
                                     <i class="bi bi-info-circle"></i>
-                                    <p class="mb-2">Debes iniciar sesión para inscribirte.</p>
+                                    <p class="mb-2">Debes iniciar sesión como estudiante para inscribirte.</p>
                                     <a href="{% url 'login' %}" class="btn btn-primary btn-sm">
                                         <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
                                     </a>
