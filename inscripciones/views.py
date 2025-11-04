@@ -122,7 +122,7 @@ def lista_practicas_internas(request):
     practicas = PracticaInterna.objects.filter(
         activa=True,
         fecha_limite_inscripcion__gte=timezone.now()
-    ).select_related('facultad', 'carrera').order_by('-fecha_publicacion')
+    ).select_related('facultad').order_by('-fecha_publicacion')
     
     # Aplicar filtros si existen
     if form.is_valid():
