@@ -96,7 +96,7 @@
                             <td>{{ practica.inscripcioninterna_set.count }}</td>
                             <td>{{ practica.fecha_publicacion|date:"d/m/Y" }}</td>
                             <td>
-                                <a href="{% url 'postulantes_practica_interna' practica.pk %}" class="btn btn-sm btn-info mb-1">
+                                <a href="{% url 'postulantes_practica_interna' practica.pk %}" class="btn btn-sm btn-primary mb-1">
                                     <i class="fas fa-users"></i> Ver Postulantes
                                 </a>
                                 <a href="{% url 'editar_practica_facultad' practica.pk %}" class="btn btn-sm btn-warning mb-1">

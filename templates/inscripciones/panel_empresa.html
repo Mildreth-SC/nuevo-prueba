@@ -94,12 +94,19 @@
                             <td>{{ practica.inscripcion_set.count }}</td>
                             <td>{{ practica.fecha_publicacion|date:"d/m/Y" }}</td>
                             <td>
-                                <a href="{% url 'postulantes_practica' practica.pk %}" class="btn btn-sm btn-info">
+                                <a href="{% url 'postulantes_practica' practica.pk %}" class="btn btn-sm btn-primary mb-1">
                                     <i class="fas fa-users"></i> Ver Postulantes
                                 </a>
-                                <a href="{% url 'editar_practica_empresa' practica.pk %}" class="btn btn-sm btn-warning">
-                                    <i class="fas fa-edit"></i>
+                                <a href="{% url 'editar_practica_empresa' practica.pk %}" class="btn btn-sm btn-warning mb-1">
+                                    <i class="fas fa-edit"></i> Editar
                                 </a>
+                                <button type="button" class="btn btn-danger btn-sm mb-1"
+                                    onclick="if(confirm('¿Estás seguro de eliminar esta práctica? Esta acción no se puede deshacer.')) { document.getElementById('delete-form-panel-{{ practica.pk }}').submit(); }">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                                <form id="delete-form-panel-{{ practica.pk }}" action="{% url 'eliminar_practica_empresa' practica.pk %}" method="post" style="display:none;">
+                                    {% csrf_token %}
+                                </form>
                             </td>
                         </tr>
                         {% endfor %}
