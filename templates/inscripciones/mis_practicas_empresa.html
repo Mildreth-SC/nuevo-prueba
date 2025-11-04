@@ -79,18 +79,18 @@
                             <td>{{ practica.fecha_inicio|date:"d/m/Y" }}</td>
                             <td>{{ practica.fecha_limite_inscripcion|date:"d/m/Y" }}</td>
                             <td class="text-nowrap">
-                                <a href="{% url 'detalle_practica' practica.pk %}" class="btn btn-info btn-sm mb-1" title="Ver Detalles">
-                                    <i class="fas fa-eye"></i> Ver
+                                <a href="{% url 'detalle_practica' practica.pk %}" class="btn btn-info btn-sm mb-1">
+                                    Ver
                                 </a>
-                                <a href="{% url 'postulantes_practica' practica.pk %}" class="btn btn-primary btn-sm mb-1" title="Ver Postulantes">
-                                    <i class="fas fa-users"></i> Postulantes
+                                <a href="{% url 'postulantes_practica' practica.pk %}" class="btn btn-primary btn-sm mb-1">
+                                    Postulantes
                                 </a>
-                                <a href="{% url 'editar_practica_empresa' practica.pk %}" class="btn btn-warning btn-sm mb-1" title="Editar">
-                                    <i class="fas fa-edit"></i> Editar
+                                <a href="{% url 'editar_practica_empresa' practica.pk %}" class="btn btn-warning btn-sm mb-1">
+                                    Editar
                                 </a>
-                                <button type="button" class="btn btn-danger btn-sm mb-1" title="Eliminar" 
+                                <button type="button" class="btn btn-danger btn-sm mb-1" 
                                     onclick="if(confirm('¿Estás seguro de eliminar esta práctica? Esta acción no se puede deshacer.')) { document.getElementById('delete-form-{{ practica.pk }}').submit(); }">
-                                    <i class="fas fa-trash"></i> Eliminar
+                                    Eliminar
                                 </button>
                                 <form id="delete-form-{{ practica.pk }}" action="{% url 'eliminar_practica_empresa' practica.pk %}" method="post" style="display:none;">
                                     {% csrf_token %}
