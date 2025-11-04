@@ -566,7 +566,8 @@ def crear_practica_empresa(request):
         if form.is_valid():
             practica = form.save(commit=False)
             practica.empresa = empresa
-            practica.cupos_totales = practica.cupos_disponibles  # Inicializar cupos totales
+            # Inicializar cupos_disponibles con el mismo valor que cupos_totales
+            practica.cupos_disponibles = practica.cupos_totales
             practica.save()
             messages.success(request, 'Práctica creada exitosamente.')
             return redirect('panel_empresa')
