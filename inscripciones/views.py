@@ -173,7 +173,7 @@ def detalle_practica(request, pk):
         'practica': practica,
         'inscrito': inscrito,
         'inscripcion': inscripcion,
-        'now': timezone.now().date(),
+        'now': timezone.now(),
     }
     return render(request, 'inscripciones/detalle_practica.html', context)
 
@@ -197,7 +197,7 @@ def detalle_practica_interna(request, pk):
         'practica': practica,
         'inscrito': inscrito,
         'inscripcion': inscripcion,
-        'now': timezone.now().date(),
+        'now': timezone.now(),
     }
     return render(request, 'inscripciones/detalle_practica_interna.html', context)
 
