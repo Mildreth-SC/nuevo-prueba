@@ -65,33 +65,33 @@
 </section>
 
 <!-- Componentes -->
-<section class="py-5">
+<section class="py-5 bg-light">
     <div class="container">
         <h2 class="text-center display-5 fw-bold mb-5">Componentes</h2>
         <div class="row g-4">
             <div class="col-md-6">
-                <div class="card h-100 border-0 shadow-sm hover-shadow">
+                <div class="card h-100 component-card hover-shadow">
                     <div class="card-body p-5 text-center">
                         <div class="mb-4">
-                            <i class="bi bi-briefcase-fill text-primary" style="font-size: 4rem;"></i>
+                            <i class="bi bi-briefcase-fill" style="font-size: 4rem; color: #c94141;"></i>
                         </div>
-                        <h3 class="h4 mb-3">Prácticas Pre-Profesionales</h3>
-                        <p class="text-muted">En contextos relacionados al perfil del estudiante para desarrollar competencias laborales en empresas e instituciones.</p>
-                        <a href="{% url 'lista_practicas' %}" class="btn btn-primary mt-3">
+                        <h3 class="h4 mb-3 fw-bold">Prácticas Pre-Profesionales</h3>
+                        <p class="text-muted mb-4">En contextos relacionados al perfil del estudiante para desarrollar competencias laborales en empresas e instituciones.</p>
+                        <a href="{% url 'lista_practicas' %}" class="btn btn-component btn-gradient-green">
                             <i class="bi bi-arrow-right"></i> Explorar Prácticas
                         </a>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card h-100 border-0 shadow-sm hover-shadow">
+                <div class="card h-100 component-card hover-shadow">
                     <div class="card-body p-5 text-center">
                         <div class="mb-4">
-                            <i class="bi bi-heart-fill text-danger" style="font-size: 4rem;"></i>
+                            <i class="bi bi-heart-fill" style="font-size: 4rem; color: #c94141;"></i>
                         </div>
-                        <h3 class="h4 mb-3">Prácticas de Servicio Comunitario</h3>
-                        <p class="text-muted">Cuya naturaleza es el aporte de soluciones innovadoras a problemas de personas, grupos o contextos de vulnerabilidad.</p>
-                        <a href="{% url 'lista_practicas_internas' %}" class="btn btn-danger mt-3">
+                        <h3 class="h4 mb-3 fw-bold">Prácticas de Servicio Comunitario</h3>
+                        <p class="text-muted mb-4">Cuya naturaleza es el aporte de soluciones innovadoras a problemas de personas, grupos o contextos de vulnerabilidad.</p>
+                        <a href="{% url 'lista_practicas_internas' %}" class="btn btn-component btn-gradient-red">
                             <i class="bi bi-arrow-right"></i> Ver Proyectos
                         </a>
                     </div>
@@ -102,35 +102,35 @@
 </section>
 
 <!-- Estadísticas -->
-<section class="py-5 bg-primary text-white">
+<section class="py-5 stats-section text-white">
     <div class="container">
         <div class="row text-center g-4">
             <div class="col-md-3">
                 <div class="stat-item">
-                    <i class="bi bi-building display-4 mb-3"></i>
-                    <h3 class="display-4 fw-bold">{{ total_empresas|default:"50+" }}</h3>
-                    <p class="lead">Empresas Aliadas</p>
+                    <i class="bi bi-building display-3 mb-3"></i>
+                    <h3 class="display-3 fw-bold mb-2">{{ total_empresas|default:"9" }}</h3>
+                    <p class="fs-5">Empresas Aliadas</p>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="stat-item">
-                    <i class="bi bi-briefcase display-4 mb-3"></i>
-                    <h3 class="display-4 fw-bold">{{ total_practicas|default:"100+" }}</h3>
-                    <p class="lead">Prácticas Disponibles</p>
+                    <i class="bi bi-briefcase display-3 mb-3"></i>
+                    <h3 class="display-3 fw-bold mb-2">{{ total_practicas|default:"10" }}</h3>
+                    <p class="fs-5">Prácticas Disponibles</p>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="stat-item">
-                    <i class="bi bi-people display-4 mb-3"></i>
-                    <h3 class="display-4 fw-bold">{{ total_estudiantes|default:"500+" }}</h3>
-                    <p class="lead">Estudiantes Beneficiados</p>
+                    <i class="bi bi-people display-3 mb-3"></i>
+                    <h3 class="display-3 fw-bold mb-2">{{ total_estudiantes|default:"15" }}</h3>
+                    <p class="fs-5">Estudiantes Beneficiados</p>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="stat-item">
-                    <i class="bi bi-bank display-4 mb-3"></i>
-                    <h3 class="display-4 fw-bold">{{ total_facultades|default:"15+" }}</h3>
-                    <p class="lead">Facultades Participantes</p>
+                    <i class="bi bi-bank display-3 mb-3"></i>
+                    <h3 class="display-3 fw-bold mb-2">{{ total_facultades|default:"4" }}</h3>
+                    <p class="fs-5">Facultades Participantes</p>
                 </div>
             </div>
         </div>
@@ -346,44 +346,129 @@
 </section>
 
 <style>
-    /* Estilos mejorados para mejor visibilidad */
+    /* Cards de componentes - Estilo similar a la imagen */
+    .component-card {
+        background: #f5f5f7 !important;
+        border: none !important;
+        border-radius: 20px !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+    }
+    
+    .component-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+    
+    .component-card .card-body {
+        background: #f5f5f7;
+    }
+    
+    /* Botones con gradiente - Rojo a Verde */
+    .btn-component {
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 12px 32px;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .btn-gradient-green {
+        background: linear-gradient(90deg, #c94141 0%, #4caf50 100%);
+    }
+    
+    .btn-gradient-green:hover {
+        background: linear-gradient(90deg, #b03636 0%, #43a047 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+    
+    .btn-gradient-red {
+        background: linear-gradient(90deg, #c94141 0%, #e91e63 100%);
+    }
+    
+    .btn-gradient-red:hover {
+        background: linear-gradient(90deg, #b03636 0%, #d81b60 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+    
+    /* Sección de estadísticas - Degradado rojo a verde como la imagen */
+    .stats-section {
+        background: linear-gradient(90deg, #c94141 0%, #b85a4a 15%, #a87453 30%, #8d8b5f 50%, #6da16d 70%, #5cb574 85%, #4caf50 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stats-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, rgba(201, 65, 65, 0.95) 0%, rgba(184, 90, 74, 0.95) 15%, rgba(168, 116, 83, 0.95) 30%, rgba(141, 139, 95, 0.95) 50%, rgba(109, 161, 109, 0.95) 70%, rgba(92, 181, 116, 0.95) 85%, rgba(76, 175, 80, 0.95) 100%);
+    }
+    
+    .stats-section .container {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .stat-item {
+        transition: all 0.3s ease;
+        padding: 30px 20px;
+        border-radius: 15px;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    .stat-item:hover {
+        transform: scale(1.05);
+        background: rgba(255,255,255,0.15);
+    }
+    
+    .stat-item i {
+        opacity: 0.9;
+    }
+    
+    /* Títulos de secciones */
+    .display-5 {
+        position: relative;
+        padding-bottom: 20px;
+        margin-bottom: 3rem !important;
+    }
+    
+    .display-5::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        border-radius: 2px;
+    }
+    
+    /* Cards generales */
     .card {
-        border: 2px solid #e0e0e0 !important;
+        border: none !important;
         border-radius: 15px !important;
         overflow: hidden;
         background: #ffffff;
     }
     
     .hover-shadow {
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     
     .hover-shadow:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important;
-        border-color: #007bff !important;
-    }
-    
-    .stat-item {
-        transition: all 0.3s ease;
-        padding: 20px;
-        border-radius: 10px;
-        background: rgba(255,255,255,0.1);
-    }
-    
-    .stat-item:hover {
-        transform: scale(1.1);
-        background: rgba(255,255,255,0.2);
-    }
-    
-    /* Mejorar cards de componentes */
-    .card-body {
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    }
-    
-    .hover-shadow:hover .card-body {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
     }
     
     /* Sección de beneficios */
@@ -391,35 +476,62 @@
         border-radius: 15px;
         transition: all 0.3s ease;
         background: #ffffff;
-        border: 2px solid #f0f0f0;
+        border: 1px solid #e0e0e0;
     }
     
     .text-center.p-4:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        border-color: #007bff;
-        background: #f8f9ff;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        border-color: #667eea;
     }
     
     /* Cards de innovaciones sociales */
     .card.border-0 {
-        border: 2px solid #e0e0e0 !important;
+        border: none !important;
         border-radius: 15px;
         transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     
     .card.border-0:hover {
-        border-color: #28a745 !important;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
         transform: translateY(-5px);
     }
     
-    /* Mejorar íconos */
-    .bi {
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    /* Cards de testimonios */
+    .card.border-0.shadow-sm {
+        border: none !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
     }
     
-    /* Animaciones suaves */
+    .card.border-0.shadow-sm:hover {
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+        transform: translateY(-5px);
+    }
+    
+    /* Botones estándar */
+    .btn {
+        border-radius: 25px;
+        font-weight: 600;
+        padding: 10px 28px;
+        transition: all 0.3s ease;
+        border: none;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .btn-primary {
+        background: #667eea;
+    }
+    
+    .btn-primary:hover {
+        background: #5568d3;
+    }
+    
+    /* Animaciones */
     @keyframes fadeInUp {
         from {
             opacity: 0;
@@ -435,61 +547,14 @@
         animation: fadeInUp 0.8s ease-out;
     }
     
-    /* Mejorar sección de estadísticas */
-    .bg-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    /* Íconos */
+    .bi {
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     }
     
-    /* Mejorar testimonios */
-    .card.border-0.shadow-sm {
-        border: 2px solid #e0e0e0 !important;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08) !important;
-    }
-    
-    .card.border-0.shadow-sm:hover {
-        box-shadow: 0 15px 40px rgba(0,0,0,0.15) !important;
-        transform: translateY(-8px);
-    }
-    
-    /* Mejorar botones */
-    .btn {
-        border-radius: 50px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    
-    .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-    }
-    
-    /* Agregar borde y sombra a secciones */
-    section {
-        position: relative;
-    }
-    
-    section.py-5:not(.bg-primary):not(.bg-gradient) {
-        border-bottom: 1px solid #e0e0e0;
-    }
-    
-    /* Mejorar títulos de secciones */
-    .display-5 {
-        position: relative;
-        padding-bottom: 15px;
-    }
-    
-    .display-5::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100px;
-        height: 4px;
-        background: linear-gradient(90deg, #667eea, #764ba2);
-        border-radius: 2px;
+    /* Mejorar fondo de secciones */
+    .bg-light {
+        background-color: #fafafa !important;
     }
 </style>
 
