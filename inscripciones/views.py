@@ -70,9 +70,19 @@ def home(request):
     
     empresas_destacadas = Empresa.objects.filter(activa=True).order_by('-fecha_registro')[:4]
     
+    # Estadísticas para la página principal
+    total_empresas = Empresa.objects.filter(activa=True).count()
+    total_practicas = Practica.objects.filter(activa=True).count()
+    total_estudiantes = Estudiante.objects.filter(user__is_active=True).count()
+    total_facultades = Facultad.objects.filter(activa=True).count()
+    
     context = {
         'practicas_destacadas': practicas_destacadas,
         'empresas_destacadas': empresas_destacadas,
+        'total_empresas': total_empresas,
+        'total_practicas': total_practicas,
+        'total_estudiantes': total_estudiantes,
+        'total_facultades': total_facultades,
     }
     return render(request, 'inscripciones/home.html', context)
 
