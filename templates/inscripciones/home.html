@@ -14,7 +14,10 @@
                 <p class="lead fade-in-up">Conecta con las mejores empresas y facultades para desarrollar tus habilidades profesionales. Participa en proyectos de vinculación con enfoque de innovación social que aportan soluciones a problemas y necesidades de la sociedad.</p>
                 <div class="d-flex gap-3 justify-content-center flex-wrap fade-in-up mt-4">
                     <a href="{% url 'lista_practicas' %}" class="btn btn-light btn-lg px-4">
-                        <i class="bi bi-search"></i> Explorar Prácticas
+                        <i class="bi bi-briefcase"></i> Prácticas en Empresas
+                    </a>
+                    <a href="{% url 'lista_practicas_internas' %}" class="btn btn-outline-light btn-lg px-4">
+                        <i class="bi bi-heart"></i> Servicio Comunitario
                     </a>
                     {% if not user.is_authenticated %}
                         <div class="dropdown">

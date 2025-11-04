@@ -115,6 +115,45 @@ def lista_practicas(request):
     return render(request, 'inscripciones/lista_practicas.html', context)
 
 
+def lista_practicas_internas(request):
+    """Lista todas las prácticas internas activas de facultades"""
+    form = BusquedaPracticasInternasForm(request.GET or None)
+    
+    practicas = PracticaInterna.objects.filter(
+        activa=True,
+        fecha_limite_inscripcion__gte=timezone.now()
+    ).select_related('facultad', 'carrera').order_by('-fecha_publicacion')
+    
+    # Aplicar filtros si existen
+    if form.is_valid():
+        titulo = form.cleaned_data.get('titulo')
+        facultad = form.cleaned_data.get('facultad')
+        tipo_servicio = form.cleaned_data.get('tipo_servicio')
+        fecha_desde = form.cleaned_data.get('fecha_inicio_desde')
+        fecha_hasta = form.cleaned_data.get('fecha_inicio_hasta')
+        
+        if titulo:
+            practicas = practicas.filter(Q(titulo__icontains=titulo) | Q(descripcion_proyecto__icontains=titulo))
+        if facultad:
+            practicas = practicas.filter(facultad=facultad)
+        if tipo_servicio:
+            practicas = practicas.filter(tipo_servicio=tipo_servicio)
+        if fecha_desde:
+            practicas = practicas.filter(fecha_inicio__gte=fecha_desde)
+        if fecha_hasta:
+            practicas = practicas.filter(fecha_inicio__lte=fecha_hasta)
+    
+    paginator = Paginator(practicas, 9)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'page_obj': page_obj,
+        'form': form,
+    }
+    return render(request, 'inscripciones/lista_practicas_internas.html', context)
+
+
 def detalle_practica(request, pk):
     """Detalle de una práctica específica"""
     practica = get_object_or_404(Practica, pk=pk, activa=True)
@@ -136,6 +175,29 @@ def detalle_practica(request, pk):
         'inscripcion': inscripcion,
     }
     return render(request, 'inscripciones/detalle_practica.html', context)
+
+
+def detalle_practica_interna(request, pk):
+    """Detalle de una práctica interna específica"""
+    practica = get_object_or_404(PracticaInterna, pk=pk, activa=True)
+    
+    # Verificar si el usuario está inscrito
+    inscrito = False
+    inscripcion = None
+    if request.user.is_authenticated:
+        try:
+            estudiante = Estudiante.objects.get(user=request.user)
+            inscripcion = InscripcionInterna.objects.get(estudiante=estudiante, practica_interna=practica)
+            inscrito = True
+        except (Estudiante.DoesNotExist, InscripcionInterna.DoesNotExist):
+            pass
+    
+    context = {
+        'practica': practica,
+        'inscrito': inscrito,
+        'inscripcion': inscripcion,
+    }
+    return render(request, 'inscripciones/detalle_practica_interna.html', context)
 
 
 @estudiante_required
@@ -243,6 +305,107 @@ def cancelar_inscripcion(request, pk):
         with transaction.atomic():
             # Bloquear para actualización
             practica = Practica.objects.select_for_update().get(pk=inscripcion.practica.pk)
+            
+            # Cambiar estado de inscripción
+            inscripcion.estado = 'cancelada'
+            inscripcion.save(update_fields=['estado'])
+            
+            # Restaurar cupo disponible
+            practica.cupos_disponibles += 1
+            practica.save(update_fields=['cupos_disponibles'])
+            
+        messages.success(request, 'Inscripción cancelada exitosamente.')
+    except Exception as e:
+        messages.error(request, f'Error al cancelar la inscripción: {str(e)}')
+    
+    return redirect('mis_inscripciones')
+
+
+@estudiante_required
+def inscribirse_practica_interna(request, pk):
+    """Inscripción a una práctica interna"""
+    practica = get_object_or_404(PracticaInterna, pk=pk, activa=True)
+    
+    try:
+        estudiante = Estudiante.objects.get(user=request.user)
+    except Estudiante.DoesNotExist:
+        messages.error(request, 'Debes completar tu perfil de estudiante primero.')
+        return redirect('perfil_estudiante')
+    
+    # Verificar si ya está inscrito
+    inscripcion_existente = InscripcionInterna.objects.filter(estudiante=estudiante, practica_interna=practica).first()
+    if inscripcion_existente:
+        messages.warning(request, f'Ya estás inscrito en esta práctica. Tu inscripción fue realizada el {inscripcion_existente.fecha_inscripcion.strftime("%d/%m/%Y")}.')
+        return redirect('mis_inscripciones')
+    
+    if request.method == 'POST':
+        form = InscripcionInternaForm(request.POST)
+        if form.is_valid():
+            try:
+                # Usar transacción atómica con bloqueo
+                with transaction.atomic():
+                    # Bloquear la fila de la práctica
+                    practica_locked = PracticaInterna.objects.select_for_update().get(pk=pk)
+                    
+                    # Verificar cupos disponibles
+                    if practica_locked.cupos_disponibles <= 0:
+                        messages.error(request, 'No hay cupos disponibles para esta práctica.')
+                        return redirect('detalle_practica_interna', pk=pk)
+                    
+                    # Verificar fecha límite
+                    if timezone.now() > practica_locked.fecha_limite_inscripcion:
+                        messages.error(request, 'La fecha límite de inscripción ha pasado.')
+                        return redirect('detalle_practica_interna', pk=pk)
+                    
+                    # Verificar duplicados
+                    if InscripcionInterna.objects.filter(estudiante=estudiante, practica_interna=practica_locked).exists():
+                        messages.warning(request, 'Ya estás inscrito en esta práctica.')
+                        return redirect('mis_inscripciones')
+                    
+                    # Crear inscripción
+                    inscripcion = form.save(commit=False)
+                    inscripcion.estudiante = estudiante
+                    inscripcion.practica_interna = practica_locked
+                    inscripcion.save()
+                    
+                    # Reducir cupos disponibles
+                    practica_locked.cupos_disponibles -= 1
+                    practica_locked.save(update_fields=['cupos_disponibles'])
+                
+                messages.success(request, '¡Inscripción realizada exitosamente!')
+                return redirect('mis_inscripciones')
+            except Exception as e:
+                messages.error(request, f'Error al procesar la inscripción: {str(e)}')
+                return redirect('detalle_practica_interna', pk=pk)
+    else:
+        form = InscripcionInternaForm()
+    
+    context = {
+        'practica': practica,
+        'form': form,
+    }
+    return render(request, 'inscripciones/inscribirse_practica_interna.html', context)
+
+
+@estudiante_required
+def cancelar_inscripcion_interna(request, pk):
+    """Cancelar una inscripción interna"""
+    inscripcion = get_object_or_404(InscripcionInterna, pk=pk, estudiante__user=request.user)
+    
+    # Solo se puede cancelar si está pendiente
+    if inscripcion.estado != 'pendiente':
+        messages.error(request, 'Solo puedes cancelar inscripciones pendientes.')
+        return redirect('mis_inscripciones')
+    
+    # Verificar que la fecha límite no haya pasado
+    if timezone.now() > inscripcion.practica_interna.fecha_limite_inscripcion:
+        messages.error(request, 'Ya pasó la fecha límite para cancelar esta inscripción.')
+        return redirect('mis_inscripciones')
+    
+    try:
+        with transaction.atomic():
+            # Bloquear para actualización
+            practica = PracticaInterna.objects.select_for_update().get(pk=inscripcion.practica_interna.pk)
             
             # Cambiar estado de inscripción
             inscripcion.estado = 'cancelada'

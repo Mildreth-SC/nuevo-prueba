@@ -6,7 +6,9 @@ urlpatterns = [
     # Páginas principales
     path('', views.home, name='home'),
     path('practicas/', views.lista_practicas, name='lista_practicas'),
+    path('practicas-internas/', views.lista_practicas_internas, name='lista_practicas_internas'),
     path('practicas/<int:pk>/', views.detalle_practica, name='detalle_practica'),
+    path('practicas-internas/<int:pk>/', views.detalle_practica_interna, name='detalle_practica_interna'),
     path('empresas/', views.lista_empresas, name='lista_empresas'),
     path('empresas/<int:pk>/', views.detalle_empresa, name='detalle_empresa'),
     
@@ -22,9 +24,11 @@ urlpatterns = [
     
     # Inscripciones
     path('inscribirse/<int:pk>/', views.inscribirse_practica, name='inscribirse_practica'),
+    path('inscribirse-interna/<int:pk>/', views.inscribirse_practica_interna, name='inscribirse_practica_interna'),
     path('mis-inscripciones/', views.mis_inscripciones, name='mis_inscripciones'),
     path('inscripcion/<int:pk>/', views.detalle_inscripcion, name='detalle_inscripcion'),
     path('cancelar-inscripcion/<int:pk>/', views.cancelar_inscripcion, name='cancelar_inscripcion'),
+    path('cancelar-inscripcion-interna/<int:pk>/', views.cancelar_inscripcion_interna, name='cancelar_inscripcion_interna'),
     
     # Gestión de documentos
     path('inscripcion/<int:inscripcion_pk>/documentos/', views.gestionar_documentos, name='gestionar_documentos'),
