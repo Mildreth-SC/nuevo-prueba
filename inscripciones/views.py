@@ -974,7 +974,8 @@ def crear_practica_facultad(request):
         if form.is_valid():
             practica = form.save(commit=False)
             practica.facultad = facultad
-            practica.cupos_totales = practica.cupos_disponibles  # Inicializar cupos totales
+            # Inicializar cupos_disponibles con el mismo valor que cupos_totales
+            practica.cupos_disponibles = practica.cupos_totales
             practica.save()
             messages.success(request, 'Práctica interna creada exitosamente.')
             return redirect('panel_facultad')
@@ -1001,7 +1002,14 @@ def editar_practica_facultad(request, pk):
     if request.method == 'POST':
         form = PracticaInternaForm(request.POST, instance=practica)
         if form.is_valid():
-            form.save()
+            practica_actualizada = form.save(commit=False)
+            
+            # Si cambió cupos_totales, ajustar cupos_disponibles proporcionalmente
+            if practica.cupos_totales != practica_actualizada.cupos_totales:
+                cupos_ocupados = practica.cupos_totales - practica.cupos_disponibles
+                practica_actualizada.cupos_disponibles = max(0, practica_actualizada.cupos_totales - cupos_ocupados)
+            
+            practica_actualizada.save()
             messages.success(request, 'Práctica interna actualizada exitosamente.')
             return redirect('mis_practicas_facultad')
     else:
