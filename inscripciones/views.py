@@ -716,6 +716,27 @@ def mis_practicas_empresa(request):
 
 
 @login_required
+def perfil_empresa(request):
+    """Vista de perfil de la empresa"""
+    if not hasattr(request.user, 'empresa'):
+        messages.error(request, 'No tienes un perfil de empresa.')
+        return redirect('home')
+    
+    empresa = request.user.empresa
+    
+    # Estadísticas básicas
+    total_practicas = Practica.objects.filter(empresa=empresa).count()
+    practicas_activas = Practica.objects.filter(empresa=empresa, activa=True).count()
+    
+    context = {
+        'empresa': empresa,
+        'total_practicas': total_practicas,
+        'practicas_activas': practicas_activas,
+    }
+    return render(request, 'inscripciones/perfil_empresa.html', context)
+
+
+@login_required
 def crear_practica_empresa(request):
     """Crear una nueva práctica"""
     if not hasattr(request.user, 'empresa'):
@@ -961,6 +982,27 @@ def mis_practicas_facultad(request):
 
 
 @login_required
+def perfil_facultad(request):
+    """Vista de perfil de la facultad"""
+    if not hasattr(request.user, 'facultad'):
+        messages.error(request, 'No tienes un perfil de facultad.')
+        return redirect('home')
+    
+    facultad = request.user.facultad
+    
+    # Estadísticas básicas
+    total_practicas = PracticaInterna.objects.filter(facultad=facultad).count()
+    practicas_activas = PracticaInterna.objects.filter(facultad=facultad, activa=True).count()
+    
+    context = {
+        'facultad': facultad,
+        'total_practicas': total_practicas,
+        'practicas_activas': practicas_activas,
+    }
+    return render(request, 'inscripciones/perfil_facultad.html', context)
+
+
+@login_required
 def crear_practica_facultad(request):
     """Crear una nueva práctica interna"""
     if not hasattr(request.user, 'facultad'):
@@ -1021,6 +1063,26 @@ def editar_practica_facultad(request, pk):
         'form': form,
     }
     return render(request, 'inscripciones/editar_practica_interna.html', context)
+
+
+@login_required
+def eliminar_practica_facultad(request, pk):
+    """Eliminar una práctica interna"""
+    if not hasattr(request.user, 'facultad'):
+        messages.error(request, 'No tienes un perfil de facultad.')
+        return redirect('home')
+    
+    facultad = request.user.facultad
+    practica = get_object_or_404(PracticaInterna, pk=pk, facultad=facultad)
+    
+    if request.method == 'POST':
+        titulo = practica.titulo
+        practica.delete()
+        messages.success(request, f'La práctica interna "{titulo}" ha sido eliminada exitosamente.')
+        return redirect('mis_practicas_facultad')
+    
+    # Si no es POST, redirigir a mis prácticas
+    return redirect('mis_practicas_facultad')
 
 
 @login_required

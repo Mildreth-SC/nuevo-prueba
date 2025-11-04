@@ -19,8 +19,10 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     
-    # Perfil de estudiante
+    # Perfiles
     path('perfil/', views.perfil_estudiante, name='perfil_estudiante'),
+    path('empresa/perfil/', views.perfil_empresa, name='perfil_empresa'),
+    path('facultad/perfil/', views.perfil_facultad, name='perfil_facultad'),
     
     # Inscripciones
     path('inscribirse/<int:pk>/', views.inscribirse_practica, name='inscribirse_practica'),
@@ -48,6 +50,7 @@ urlpatterns = [
     path('facultad/practicas/', views.mis_practicas_facultad, name='mis_practicas_facultad'),
     path('facultad/practicas/crear/', views.crear_practica_facultad, name='crear_practica_facultad'),
     path('facultad/practicas/<int:pk>/editar/', views.editar_practica_facultad, name='editar_practica_facultad'),
+    path('facultad/practicas/<int:pk>/eliminar/', views.eliminar_practica_facultad, name='eliminar_practica_facultad'),
     path('facultad/practicas/<int:pk>/postulantes/', views.postulantes_practica_interna, name='postulantes_practica_interna'),
     path('facultad/inscripcion/<int:inscripcion_pk>/evaluar/', views.evaluar_postulante_interno, name='evaluar_postulante_interno'),
 ]
