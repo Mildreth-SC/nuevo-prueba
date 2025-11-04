@@ -22,30 +22,6 @@
                         <i class="bi bi-heart"></i> Prácticas Internas
                     </a>
                 </div>
-
-                {% if not user.is_authenticated %}
-                    <div class="d-flex gap-3 justify-content-center flex-wrap fade-in-up mt-4">
-                        <div class="dropdown">
-                            <button class="btn btn-outline-light btn-lg px-4 dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-plus"></i> Registrarse
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{% url 'registro_estudiante' %}">
-                                    <i class="bi bi-mortarboard"></i> Como Estudiante
-                                </a></li>
-                                <li><a class="dropdown-item" href="{% url 'registro_empresa' %}">
-                                    <i class="bi bi-building"></i> Como Empresa
-                                </a></li>
-                                <li><a class="dropdown-item" href="{% url 'registro_facultad' %}">
-                                    <i class="bi bi-bank"></i> Como Facultad
-                                </a></li>
-                            </ul>
-                        </div>
-                        <a href="{% url 'login' %}" class="btn btn-light btn-lg px-4">
-                            <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
-                        </a>
-                    </div>
-                {% endif %}
             </div>
         </div>
     </div>
