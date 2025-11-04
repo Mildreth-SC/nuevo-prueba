@@ -1,60 +1,104 @@
-{% extends 'inscripciones/base.html' %}
+{% extends 'inscripciones/base.html' %}{% extends 'inscripciones/base.html' %}
 
-{% block title %}Inicio - Sistema de Prácticas Pre Profesionales ULEAM{% endblock %}
 
-{% block content %}
-<!-- Hero Section -->
-<section class="hero-section">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8 mx-auto text-center">
-                <div class="hero-divider mx-auto"></div>
-                <h1 class="fade-in-up">Prácticas Pre Profesionales y Profesionales</h1>
-                <p class="subtitle fade-in-up">¡Aportamos soluciones que trascienden!</p>
-                <p class="lead fade-in-up">Conecta con las mejores empresas y facultades para desarrollar tus habilidades profesionales. Participa en proyectos de vinculación con enfoque de innovación social que aportan soluciones a problemas y necesidades de la sociedad.</p>
-                <div class="d-flex gap-3 justify-content-center flex-wrap fade-in-up mt-4">
-                    <a href="{% url 'lista_practicas' %}" class="btn btn-light btn-lg px-4">
-                        <i class="bi bi-briefcase"></i> Prácticas en Empresas
-                    </a>
-                    <a href="{% url 'lista_practicas_internas' %}" class="btn btn-outline-light btn-lg px-4">
-                        <i class="bi bi-heart"></i> Prácticas Internas
-                    </a>
-                    {% if not user.is_authenticated %}
-                        <div class="dropdown">
-                            <button class="btn btn-outline-light btn-lg px-4 dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-plus"></i> Registrarse
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{% url 'registro_estudiante' %}">
-                                    <i class="bi bi-mortarboard"></i> Como Estudiante
-                                </a></li>
-                                <li><a class="dropdown-item" href="{% url 'registro_empresa' %}">
-                                    <i class="bi bi-building"></i> Como Empresa
-                                </a></li>
-                                <li><a class="dropdown-item" href="{% url 'registro_facultad' %}">
-                                    <i class="bi bi-mortarboard-fill"></i> Como Facultad
-                                </a></li>
-                            </ul>
-                        </div>
-                        <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg px-4">
-                            <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
-                        </a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- Componentes de Prácticas -->
-<section class="py-5 section-uleam-white">
-    <div class="container">
-        <div class="row text-center mb-5">
-            <div class="col-12">
-                <h2 class="section-title">Componentes</h2>
-                <p class="section-subtitle">Dos modalidades de prácticas para tu desarrollo profesional</p>
-            </div>
-        </div>
+{% block title %}Inicio - Sistema de Prácticas Pre Profesionales ULEAM{% endblock %}{% block title %}Inicio - Sistema de Prácticas Pre Profesionales ULEAM{% endblock %}
+
+
+
+{% block content %}{% block content %}
+
+<!-- Hero Section --><!-- Hero Section -->
+
+<section class="hero-section" style="min-height: 100vh; display: flex; align-items: center;"><section class="hero-section" style="min-height: 100vh; display: flex; align-items: center;">
+
+    <div class="container">    <div class="container">
+
+        <div class="row align-items-center">        <div class="row align-items-center">
+
+            <div class="col-lg-8 mx-auto text-center">            <div class="col-lg-8 mx-auto text-center">
+
+                <div class="hero-divider mx-auto"></div>                <div class="hero-divider mx-auto"></div>
+
+                <h1 class="fade-in-up">Prácticas Pre Profesionales y Profesionales</h1>                <h1 class="fade-in-up">Prácticas Pre Profesionales y Profesionales</h1>
+
+                <p class="subtitle fade-in-up">¡Aportamos soluciones que trascienden!</p>                <p class="subtitle fade-in-up">¡Aportamos soluciones que trascienden!</p>
+
+                <p class="lead fade-in-up">Conecta con las mejores empresas y facultades para desarrollar tus habilidades profesionales. Participa en proyectos de vinculación con enfoque de innovación social que aportan soluciones a problemas y necesidades de la sociedad.</p>                <p class="lead fade-in-up">Conecta con las mejores empresas y facultades para desarrollar tus habilidades profesionales. Participa en proyectos de vinculación con enfoque de innovación social que aportan soluciones a problemas y necesidades de la sociedad.</p>
+
+                <div class="d-flex gap-3 justify-content-center flex-wrap fade-in-up mt-5">                <div class="d-flex gap-3 justify-content-center flex-wrap fade-in-up mt-5">
+
+                    <a href="{% url 'lista_practicas' %}" class="btn btn-light btn-lg px-5 py-3" style="font-size: 1.2rem;">                    <a href="{% url 'lista_practicas' %}" class="btn btn-light btn-lg px-5 py-3" style="font-size: 1.2rem;">
+
+                        <i class="bi bi-briefcase"></i> Prácticas en Empresas                        <i class="bi bi-briefcase"></i> Prácticas en Empresas
+
+                    </a>                    </a>
+
+                    <a href="{% url 'lista_practicas_internas' %}" class="btn btn-outline-light btn-lg px-5 py-3" style="font-size: 1.2rem;">                    <a href="{% url 'lista_practicas_internas' %}" class="btn btn-outline-light btn-lg px-5 py-3" style="font-size: 1.2rem;">
+
+                        <i class="bi bi-heart"></i> Prácticas Internas                        <i class="bi bi-heart"></i> Prácticas Internas
+
+                    </a>                    </a>
+
+                </div>                </div>
+
+                {% if not user.is_authenticated %}                {% if not user.is_authenticated %}
+
+                    <div class="d-flex gap-3 justify-content-center flex-wrap fade-in-up mt-4">                    <div class="d-flex gap-3 justify-content-center flex-wrap fade-in-up mt-4">
+
+                        <div class="dropdown">                        <div class="dropdown">
+
+                            <button class="btn btn-outline-light btn-lg px-4 dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">                            <button class="btn btn-outline-light btn-lg px-4 dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                <i class="bi bi-person-plus"></i> Registrarse                                <i class="bi bi-person-plus"></i> Registrarse
+
+                            </button>                            </button>
+
+                            <ul class="dropdown-menu">                            <ul class="dropdown-menu">
+
+                                <li><a class="dropdown-item" href="{% url 'registro_estudiante' %}">                                <li><a class="dropdown-item" href="{% url 'registro_estudiante' %}">
+
+                                    <i class="bi bi-mortarboard"></i> Como Estudiante                                    <i class="bi bi-mortarboard"></i> Como Estudiante
+
+                                </a></li>                                </a></li>
+
+                                <li><a class="dropdown-item" href="{% url 'registro_empresa' %}">                                <li><a class="dropdown-item" href="{% url 'registro_empresa' %}">
+
+                                    <i class="bi bi-building"></i> Como Empresa                                    <i class="bi bi-building"></i> Como Empresa
+
+                                </a></li>                                </a></li>
+
+                                <li><a class="dropdown-item" href="{% url 'registro_facultad' %}">                                <li><a class="dropdown-item" href="{% url 'registro_facultad' %}">
+
+                                    <i class="bi bi-mortarboard-fill"></i> Como Facultad                                    <i class="bi bi-mortarboard-fill"></i> Como Facultad
+
+                                </a></li>                                </a></li>
+
+                            </ul>                            </ul>
+
+                        </div>                        </div>
+
+                        <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg px-4">                        <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg px-4">
+
+                            <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión                            <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+
+                        </a>                        </a>
+
+                    </div>                    </div>
+
+                {% endif %}                {% endif %}
+
+            </div>            </div>
+
+        </div>        </div>
+
+    </div>    </div>
+
+</section></section>
+
+{% endblock %}
+
+{% endblock %}
         <div class="row">
             <div class="col-lg-6 mb-4">
                 <div class="card-gradient-border h-100">
