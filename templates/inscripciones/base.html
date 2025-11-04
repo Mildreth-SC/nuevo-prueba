@@ -1147,24 +1147,28 @@
                         <i class="bi bi-house"></i> Inicio
                     </a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-briefcase"></i> Prácticas
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% url 'lista_practicas' %}">
-                            <i class="bi bi-briefcase"></i> Prácticas en Empresas
-                        </a></li>
-                        <li><a class="dropdown-item" href="{% url 'lista_practicas_internas' %}">
-                            <i class="bi bi-heart"></i> Prácticas Internas
-                        </a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'lista_empresas' %}">
-                        <i class="bi bi-building"></i> Empresas
-                    </a>
-                </li>
+                
+                <!-- Menú de Prácticas (solo para estudiantes y usuarios no autenticados) -->
+                {% if not user.is_authenticated or user.estudiante %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-briefcase"></i> Prácticas
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{% url 'lista_practicas' %}">
+                                <i class="bi bi-briefcase"></i> Prácticas en Empresas
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'lista_practicas_internas' %}">
+                                <i class="bi bi-heart"></i> Prácticas Internas
+                            </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'lista_empresas' %}">
+                            <i class="bi bi-building"></i> Empresas
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
             
             <ul class="navbar-nav">
@@ -1198,6 +1202,11 @@
                                 <i class="bi bi-plus-circle"></i> Nueva Práctica
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'perfil_empresa' %}">
+                                <i class="bi bi-person"></i> Mi Perfil
+                            </a>
+                        </li>
                     <!-- Menú para Facultades -->
                     {% elif user.facultad %}
                         <li class="nav-item">
@@ -1213,6 +1222,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'crear_practica_facultad' %}">
                                 <i class="bi bi-plus-circle"></i> Nueva Práctica Interna
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'perfil_facultad' %}">
+                                <i class="bi bi-person"></i> Mi Perfil
                             </a>
                         </li>
                     {% endif %}
