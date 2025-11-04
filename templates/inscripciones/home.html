@@ -1,4 +1,4 @@
-{% extends 'inscripciones/base.html' %}{% extends 'inscripciones/base.html' %}{% extends 'inscripciones/base.html' %}
+{% extends 'inscripciones/base.html' %}{% extends 'inscripciones/base.html' %}{% extends 'inscripciones/base.html' %}{% extends 'inscripciones/base.html' %}
 
 
 
@@ -6,51 +6,105 @@
 
 
 
-{% block content %}{% block title %}Inicio - Sistema de Prácticas Pre Profesionales ULEAM{% endblock %}{% block title %}Inicio - Sistema de Prácticas Pre Profesionales ULEAM{% endblock %}
+{% block content %}{% block title %}Inicio - Sistema de Prácticas Pre Profesionales ULEAM{% endblock %}
+
+
 
 <!-- Hero Section -->
 
 <section class="hero-section" style="min-height: 100vh; display: flex; align-items: center;">
 
-    <div class="container">
+    <div class="container">{% block content %}{% block title %}Inicio - Sistema de Prácticas Pre Profesionales ULEAM{% endblock %}{% block title %}Inicio - Sistema de Prácticas Pre Profesionales ULEAM{% endblock %}
 
-        <div class="row align-items-center">{% block content %}{% block content %}
+        <div class="row align-items-center">
 
-            <div class="col-lg-8 mx-auto text-center">
+            <div class="col-lg-8 mx-auto text-center"><!-- Hero Section -->
 
-                <div class="hero-divider mx-auto"></div><!-- Hero Section --><!-- Hero Section -->
+                <div class="hero-divider mx-auto"></div>
 
-                <h1 class="fade-in-up">Prácticas Pre Profesionales y Profesionales</h1>
+                <h1 class="fade-in-up">Prácticas Pre Profesionales y Profesionales</h1><section class="hero-section" style="min-height: 100vh; display: flex; align-items: center;">
 
-                <p class="subtitle fade-in-up">¡Aportamos soluciones que trascienden!</p><section class="hero-section" style="min-height: 100vh; display: flex; align-items: center;"><section class="hero-section" style="min-height: 100vh; display: flex; align-items: center;">
+                <p class="subtitle fade-in-up">¡Aportamos soluciones que trascienden!</p>
 
-                <p class="lead fade-in-up">Conecta con las mejores empresas y facultades para desarrollar tus habilidades profesionales. Participa en proyectos de vinculación con enfoque de innovación social que aportan soluciones a problemas y necesidades de la sociedad.</p>
+                <p class="lead fade-in-up">Conecta con las mejores empresas y facultades para desarrollar tus habilidades profesionales. Participa en proyectos de vinculación con enfoque de innovación social que aportan soluciones a problemas y necesidades de la sociedad.</p>    <div class="container">
 
-                <div class="d-flex gap-3 justify-content-center flex-wrap fade-in-up mt-5">    <div class="container">    <div class="container">
+                
+
+                <div class="d-flex gap-3 justify-content-center flex-wrap fade-in-up mt-5">        <div class="row align-items-center">{% block content %}{% block content %}
 
                     <a href="{% url 'lista_practicas' %}" class="btn btn-light btn-lg px-5 py-3" style="font-size: 1.2rem;">
 
-                        <i class="bi bi-briefcase"></i> Prácticas en Empresas        <div class="row align-items-center">        <div class="row align-items-center">
+                        <i class="bi bi-briefcase"></i> Prácticas en Empresas            <div class="col-lg-8 mx-auto text-center">
 
                     </a>
 
-                    <a href="{% url 'lista_practicas_internas' %}" class="btn btn-outline-light btn-lg px-5 py-3" style="font-size: 1.2rem;">            <div class="col-lg-8 mx-auto text-center">            <div class="col-lg-8 mx-auto text-center">
+                    <a href="{% url 'lista_practicas_internas' %}" class="btn btn-outline-light btn-lg px-5 py-3" style="font-size: 1.2rem;">                <div class="hero-divider mx-auto"></div><!-- Hero Section --><!-- Hero Section -->
 
                         <i class="bi bi-heart"></i> Prácticas Internas
 
-                    </a>                <div class="hero-divider mx-auto"></div>                <div class="hero-divider mx-auto"></div>
+                    </a>                <h1 class="fade-in-up">Prácticas Pre Profesionales y Profesionales</h1>
 
                 </div>
 
-                {% if not user.is_authenticated %}                <h1 class="fade-in-up">Prácticas Pre Profesionales y Profesionales</h1>                <h1 class="fade-in-up">Prácticas Pre Profesionales y Profesionales</h1>
+                <p class="subtitle fade-in-up">¡Aportamos soluciones que trascienden!</p><section class="hero-section" style="min-height: 100vh; display: flex; align-items: center;"><section class="hero-section" style="min-height: 100vh; display: flex; align-items: center;">
 
-                    <div class="d-flex gap-3 justify-content-center flex-wrap fade-in-up mt-4">
+                {% if not user.is_authenticated %}
 
-                        <div class="dropdown">                <p class="subtitle fade-in-up">¡Aportamos soluciones que trascienden!</p>                <p class="subtitle fade-in-up">¡Aportamos soluciones que trascienden!</p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap fade-in-up mt-4">                <p class="lead fade-in-up">Conecta con las mejores empresas y facultades para desarrollar tus habilidades profesionales. Participa en proyectos de vinculación con enfoque de innovación social que aportan soluciones a problemas y necesidades de la sociedad.</p>
 
-                            <button class="btn btn-outline-light btn-lg px-4 dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="dropdown">
+
+                            <button class="btn btn-outline-light btn-lg px-4 dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">                <div class="d-flex gap-3 justify-content-center flex-wrap fade-in-up mt-5">    <div class="container">    <div class="container">
+
+                                <i class="bi bi-person-plus"></i> Registrarse
+
+                            </button>                    <a href="{% url 'lista_practicas' %}" class="btn btn-light btn-lg px-5 py-3" style="font-size: 1.2rem;">
+
+                            <ul class="dropdown-menu">
+
+                                <li><a class="dropdown-item" href="{% url 'registro_estudiante' %}">                        <i class="bi bi-briefcase"></i> Prácticas en Empresas        <div class="row align-items-center">        <div class="row align-items-center">
+
+                                    <i class="bi bi-mortarboard"></i> Como Estudiante
+
+                                </a></li>                    </a>
+
+                                <li><a class="dropdown-item" href="{% url 'registro_empresa' %}">
+
+                                    <i class="bi bi-building"></i> Como Empresa                    <a href="{% url 'lista_practicas_internas' %}" class="btn btn-outline-light btn-lg px-5 py-3" style="font-size: 1.2rem;">            <div class="col-lg-8 mx-auto text-center">            <div class="col-lg-8 mx-auto text-center">
+
+                                </a></li>
+
+                                <li><a class="dropdown-item" href="{% url 'registro_facultad' %}">                        <i class="bi bi-heart"></i> Prácticas Internas
+
+                                    <i class="bi bi-bank"></i> Como Facultad
+
+                                </a></li>                    </a>                <div class="hero-divider mx-auto"></div>                <div class="hero-divider mx-auto"></div>
+
+                            </ul>
+
+                        </div>                </div>
+
+                        <a href="{% url 'login' %}" class="btn btn-light btn-lg px-4">
+
+                            <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión                {% if not user.is_authenticated %}                <h1 class="fade-in-up">Prácticas Pre Profesionales y Profesionales</h1>                <h1 class="fade-in-up">Prácticas Pre Profesionales y Profesionales</h1>
+
+                        </a>
+
+                    </div>                    <div class="d-flex gap-3 justify-content-center flex-wrap fade-in-up mt-4">
+
+                {% endif %}
+
+            </div>                        <div class="dropdown">                <p class="subtitle fade-in-up">¡Aportamos soluciones que trascienden!</p>                <p class="subtitle fade-in-up">¡Aportamos soluciones que trascienden!</p>
+
+        </div>
+
+    </div>                            <button class="btn btn-outline-light btn-lg px-4 dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+
+</section>
 
                                 <i class="bi bi-person-plus"></i> Registrarse                <p class="lead fade-in-up">Conecta con las mejores empresas y facultades para desarrollar tus habilidades profesionales. Participa en proyectos de vinculación con enfoque de innovación social que aportan soluciones a problemas y necesidades de la sociedad.</p>                <p class="lead fade-in-up">Conecta con las mejores empresas y facultades para desarrollar tus habilidades profesionales. Participa en proyectos de vinculación con enfoque de innovación social que aportan soluciones a problemas y necesidades de la sociedad.</p>
+
+{% endblock %}
 
                             </button>
 
