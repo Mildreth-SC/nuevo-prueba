@@ -88,6 +88,13 @@
                                 <a href="{% url 'editar_practica_empresa' practica.pk %}" class="btn btn-sm btn-warning" title="Editar">
                                     <i class="fas fa-edit"></i>
                                 </a>
+                                <button type="button" class="btn btn-sm btn-danger" title="Eliminar" 
+                                    onclick="if(confirm('¿Estás seguro de eliminar esta práctica?')) { document.getElementById('delete-form-{{ practica.pk }}').submit(); }">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <form id="delete-form-{{ practica.pk }}" action="{% url 'eliminar_practica_empresa' practica.pk %}" method="post" style="display:none;">
+                                    {% csrf_token %}
+                                </form>
                             </td>
                         </tr>
                         {% endfor %}

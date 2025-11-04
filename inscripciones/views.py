@@ -594,7 +594,12 @@ def editar_practica_empresa(request, pk):
     if request.method == 'POST':
         form = PracticaForm(request.POST, instance=practica)
         if form.is_valid():
-            form.save()
+            practica_actualizada = form.save(commit=False)
+            # Ajustar cupos_disponibles si se modificaron los cupos_totales
+            if 'cupos_totales' in form.changed_data:
+                diferencia = practica_actualizada.cupos_totales - practica.cupos_totales
+                practica_actualizada.cupos_disponibles = practica.cupos_disponibles + diferencia
+            practica_actualizada.save()
             messages.success(request, 'Práctica actualizada exitosamente.')
             return redirect('mis_practicas_empresa')
     else:
@@ -606,6 +611,26 @@ def editar_practica_empresa(request, pk):
         'form': form,
     }
     return render(request, 'inscripciones/editar_practica.html', context)
+
+
+@login_required
+def eliminar_practica_empresa(request, pk):
+    """Eliminar una práctica"""
+    if not hasattr(request.user, 'empresa'):
+        messages.error(request, 'No tienes un perfil de empresa.')
+        return redirect('home')
+    
+    empresa = request.user.empresa
+    practica = get_object_or_404(Practica, pk=pk, empresa=empresa)
+    
+    if request.method == 'POST':
+        titulo = practica.titulo
+        practica.delete()
+        messages.success(request, f'La práctica "{titulo}" ha sido eliminada exitosamente.')
+        return redirect('mis_practicas_empresa')
+    
+    # Si no es POST, redirigir a mis prácticas
+    return redirect('mis_practicas_empresa')
 
 
 @login_required

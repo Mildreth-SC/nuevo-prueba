@@ -35,6 +35,7 @@ urlpatterns = [
     path('empresa/practicas/', views.mis_practicas_empresa, name='mis_practicas_empresa'),
     path('empresa/practicas/crear/', views.crear_practica_empresa, name='crear_practica_empresa'),
     path('empresa/practicas/<int:pk>/editar/', views.editar_practica_empresa, name='editar_practica_empresa'),
+    path('empresa/practicas/<int:pk>/eliminar/', views.eliminar_practica_empresa, name='eliminar_practica_empresa'),
     path('empresa/practicas/<int:pk>/postulantes/', views.postulantes_practica, name='postulantes_practica'),
     path('empresa/inscripcion/<int:inscripcion_pk>/evaluar/', views.evaluar_postulante, name='evaluar_postulante'),
     
